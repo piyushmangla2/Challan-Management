@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bani Women — Production</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#8B6F47">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bani Women">
+<link rel="apple-touch-icon" href="bani_logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -284,13 +291,104 @@
     .section-grid { grid-template-columns:1fr !important; }
     .section-grid .full-width { grid-column:1; }
     .topbar { padding:12px 16px 12px 52px; }
+    .topbar-title { font-size:17px; }
+
+    /* Stack two-column form layouts (vendors, suppliers, settings, SKU, raw mat) */
+    .content > div > div[style*="grid-template-columns:340px"],
+    .content > div > div[style*="grid-template-columns: 340px"],
+    .content > div > div[style*="grid-template-columns:1fr 1fr"],
+    .content > div > div[style*="grid-template-columns: 1fr 1fr"] { grid-template-columns:1fr !important; }
+
+    /* Modals: near full width */
+    .modal { width:calc(100vw - 24px) !important; max-width:calc(100vw - 24px) !important; }
+    .modal-body { padding:14px 16px; }
+    .modal-header,.modal-footer { padding:12px 16px; }
+
+    /* Filter bar: stack */
+    .filter-bar { flex-direction:column; align-items:stretch; }
+    .filter-bar input,.filter-bar select { width:100%; }
+
+    /* Tabs: horizontal scroll */
+    .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
+    .tab { white-space:nowrap; flex-shrink:0; }
+
+    /* Item rows too wide for phone — wrap container in scroll */
+    .items-scroll-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+    .item-row,.item-row-header,.cut-item-row { min-width:580px; }
+
+    /* Table */
+    td { padding:9px 10px; font-size:12px; }
+    th { padding:8px 10px; }
+
+    /* Pagination */
+    .pagination-bar { flex-direction:column; align-items:flex-start; gap:6px; }
+
+    /* Records summary */
+    .rec-summary { gap:10px; }
+    .rec-summary-val { font-size:13px; }
+
+    /* Stat card */
+    .stat-card { padding:14px 16px; }
+    .stat-val { font-size:22px; }
+
+    /* Content padding */
+    .content { padding:16px; }
+
+    /* Topbar right actions */
+    .topbar-right { gap:6px; }
+    .topbar-right .btn { font-size:12px; padding:5px 10px; }
+
+    /* Toast: full width on mobile */
+    #toast-container { right:12px; left:12px; bottom:12px; }
+    .toast { max-width:100%; }
+
+    /* Dashboard pipeline: scrollable */
+    #dash-pipeline-row { overflow-x:auto !important; -webkit-overflow-scrolling:touch; flex-wrap:nowrap !important; }
+    .pipeline-stage { flex-shrink:0; min-width:90px; }
+
+    /* Cutting / challan size rows */
+    .size-row { grid-template-columns:90px 80px auto !important; }
+
+    /* Dashboard — quick actions: 3 columns instead of 6 */
+    #dash-quick-grid { grid-template-columns:repeat(3,1fr) !important; }
+    /* Dashboard — open challans + activity: stack */
+    #dash-main-grid { grid-template-columns:1fr !important; }
+    /* Dashboard — cutting trend + outstanding: stack */
+    #dash-bottom-grid { grid-template-columns:1fr !important; }
+    /* Dashboard — quick action sub-label: hide on mobile to save space */
+    .dash-qa > div > div:last-child { display:none; }
+    /* Dashboard — stat card value size */
+    .stat-val, .stat-value { font-size:22px !important; }
   }
+
   @media (max-width: 520px) {
     .stat-grid { grid-template-columns:1fr 1fr !important; }
-    .content { padding:16px; }
-    .modal { width:95vw !important; }
-    .topbar-right { gap:6px; }
+    .content { padding:12px; }
+    .modal { width:calc(100vw - 16px) !important; margin:0 8px; }
+    .modal-footer { flex-wrap:wrap; gap:8px; }
+    .modal-footer .btn { flex:1 1 auto; justify-content:center; min-width:0; }
+    .topbar { padding:10px 12px 10px 46px; }
+    .topbar-title { font-size:15px; }
+    .topbar-right .btn { font-size:11px; padding:4px 8px; }
     .btn-sm { padding:4px 8px;font-size:11px; }
+    .card-body { padding:12px 14px; }
+    .card-header { font-size:13px; padding:12px 16px; }
+    .table-wrap { font-size:11px; }
+    td,th { padding:7px 8px; }
+
+    /* Wizard steps: show icons only */
+    .step-label { display:none; }
+    .step-divider { width:18px; }
+
+    /* Filter bar selects full width */
+    .filter-bar select,.filter-bar input { font-size:13px; }
+
+    /* Sidebar footer install button */
+    .sidebar-footer { font-size:11px; }
+
+    /* Nav buttons */
+    .nav-btn { font-size:13px; }
+    .nav-label { font-size:10px; }
   }
   /* SKU search dropdown */
   .sku-search-wrap{position:relative;}
@@ -395,6 +493,7 @@
     </div>
     <div class="sidebar-footer" id="sidebar-footer">
       v2.1 · ☁ Cloud sync
+      <button id="pwa-install-btn" onclick="installPwa()" style="display:none;margin-top:6px;width:100%;padding:6px 0;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:11px;font-family:var(--font);cursor:pointer;">📲 Install App</button>
     </div>
   </nav>
 
@@ -491,7 +590,7 @@
               <div id="c-blocks-list"></div>
               <div id="c-cut-items-section" style="display:none;">
                 <div style="font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);font-weight:600;margin:14px 0 6px;border-top:1px solid var(--border);padding-top:12px;">Cut Items</div>
-                <div id="c-cut-items-list"></div>
+                <div id="c-cut-items-list" class="items-scroll-wrap"></div>
               </div>
               <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
                 <button class="btn btn-secondary" onclick="addChallanBlock()">+ Add SKU Block</button>
@@ -620,7 +719,7 @@
           <div class="card">
             <div class="card-header">Step 2 — Enter Quantities Received</div>
             <div class="card-body">
-              <div id="g-items-section">
+              <div id="g-items-section" class="items-scroll-wrap">
                 <div class="item-row-header" style="grid-template-columns: 1fr 1fr 70px 70px 80px 80px 80px;">
                   <span>SKU</span><span>Color</span><span>Size</span><span>Type</span><span>Issued</span><span>Received Now</span><span style="color:var(--warning);">Remaining</span>
                 </div>
@@ -2202,7 +2301,7 @@ function renderDashboard() {
     {label:'Fabric Job Work',sub:'Print / embroidery',page:"rawmat_fjw",color:'#0369A1',bg:'#E0F2FE',svg:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>'},
     {label:'All Records',sub:'Challans, GRNs, cuts',page:"records",color:'var(--text2)',bg:'var(--surface2)',svg:'<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>'},
   ];
-  document.getElementById('dash-quick').innerHTML=`<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:24px;">
+  document.getElementById('dash-quick').innerHTML=`<div id="dash-quick-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:24px;">
     ${qa.map(a=>`<div class="dash-qa" style="--dash-qa-color:${a.color};--dash-qa-bg:${a.bg};" onclick="${a.page==='rawmat_fjw'?"showPage('rawmat');setTimeout(()=>rmSetTab('jobwork'),50)":a.page==='payments'?"showPage('records');setTimeout(()=>recSetTab('payments'),50)":"showPage('"+a.page+"')"}">
       <div class="dash-qa-icon" style="background:${a.bg};color:${a.color};">${a.svg}</div>
       <div>
@@ -2383,11 +2482,11 @@ function renderDashboard() {
     <div class="card" style="margin-bottom:20px;">
       <div class="card-header" style="padding-bottom:14px;border-bottom:1px solid var(--border);">Production Pipeline</div>
       <div class="card-body">
-        <div style="display:flex;align-items:flex-start;gap:0;">${pipelineHtml}</div>
+        <div id="dash-pipeline-inner" style="display:flex;align-items:flex-start;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;">${pipelineHtml}</div>
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px;">
+    <div id="dash-main-grid" style="display:grid;grid-template-columns:3fr 2fr;gap:20px;margin-bottom:20px;">
       <div class="card">
         <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);">
           <span>Open Challans<span style="font-size:12px;font-weight:400;color:var(--text2);margin-left:6px;">${sortedPending.length} total${overdueChallans.length?` · <span style="color:var(--danger);">${overdueChallans.length} overdue</span>`:''}</span></span>
@@ -2413,7 +2512,7 @@ function renderDashboard() {
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+    <div id="dash-bottom-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
       <div class="card">
         <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border);">
           <span>Cutting — Last 6 Months</span>
@@ -7956,6 +8055,29 @@ function executeResetAllData() {
   closeResetModal();
   toast('All data deleted.','warning',4000);
   showPage('dashboard');
+}
+
+// ==================== PWA ====================
+let _pwaPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  _pwaPrompt=e;
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display='block';
+});
+window.addEventListener('appinstalled',()=>{
+  _pwaPrompt=null;
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display='none';
+  toast('App installed! Find it on your home screen.','success',3000);
+});
+function installPwa(){
+  if(!_pwaPrompt) return;
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(()=>{ _pwaPrompt=null; const btn=document.getElementById('pwa-install-btn'); if(btn) btn.style.display='none'; });
+}
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(e=>console.warn('SW:',e)));
 }
 
 // ==================== INIT ====================
