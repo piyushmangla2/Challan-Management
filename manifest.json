@@ -1,0 +1,18 @@
+{
+  "name": "Bani Women — Production",
+  "short_name": "Bani Women",
+  "description": "Garment production management",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#8B6F47",
+  "background_color": "#F5F3EE",
+  "icons": [
+    {
+      "src": "bani_logo.jpg",
+      "sizes": "any",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
